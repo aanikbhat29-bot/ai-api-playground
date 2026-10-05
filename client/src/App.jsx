@@ -10,9 +10,13 @@ import { GestureController } from "./gestureController";
 
 const LOCAL_AI_URL = "http://127.0.0.1:8765";
 
-const API_URL =
-  import.meta.env.VITE_API_URL ||
-  "http://localhost:5000";
+const IS_LOCAL_RUNTIME =
+  window.location.hostname === "localhost" ||
+  window.location.hostname === "127.0.0.1";
+
+const API_URL = IS_LOCAL_RUNTIME
+  ? "http://localhost:5000"
+  : "https://ai-api-playground.onrender.com";
 
 const Recognition = null;
 
