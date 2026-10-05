@@ -1,0 +1,145 @@
+* { box-sizing: border-box; }
+html, body, #root { width: 100%; height: 100%; margin: 0; }
+body {
+  overflow: hidden;
+  background: #02050a;
+  color: #aeeeff;
+  font-family: 'Courier New', monospace;
+  font-synthesis: none;
+}
+button { font: inherit; }
+
+.reel-shell {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  background: #02050a;
+  cursor: grab;
+  user-select: none;
+}
+.reel-shell:active { cursor: grabbing; }
+.reel-canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.hidden-camera { position: fixed; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+
+.reel-noise, .reel-scanlines, .reel-topline {
+  position: absolute; inset: 0; pointer-events: none;
+}
+.reel-noise {
+  opacity: .05;
+  mix-blend-mode: screen;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+.reel-scanlines {
+  opacity: .16;
+  background: repeating-linear-gradient(to bottom, transparent 0 3px, rgba(130,240,255,.035) 3px 4px);
+  mix-blend-mode: screen;
+}
+.reel-topline {
+  inset: 0 0 auto;
+  height: 1px;
+  opacity: .5;
+  background: linear-gradient(90deg, transparent, #44eaff, transparent);
+}
+
+.reel-brand {
+  position: absolute;
+  left: 28px;
+  top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  letter-spacing: .22em;
+  text-shadow: 0 0 14px rgba(65,235,255,.8);
+}
+.reel-brand strong { color: #7cecff; font-size: 14px; }
+.reel-brand span { color: rgba(93,218,239,.4); font-size: 8px; letter-spacing: .18em; }
+
+.reel-status {
+  position: absolute;
+  left: 50%;
+  bottom: 20px;
+  transform: translateX(-50%);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 18px;
+  color: rgba(110,224,243,.44);
+  font-size: 9px;
+  letter-spacing: .14em;
+  white-space: nowrap;
+}
+.status-dot { width: 6px; height: 6px; margin-top: 2px; border-radius: 50%; background: #45ffcb; box-shadow: 0 0 12px rgba(69,255,203,.95); }
+
+.reel-core-label {
+  position: absolute;
+  left: 50%;
+  bottom: 42px;
+  transform: translateX(-50%);
+  text-align: center;
+  pointer-events: none;
+  text-shadow: 0 0 16px rgba(69,235,255,.65);
+}
+.reel-core-label span { display: block; color: rgba(126,224,242,.38); font-size: 8px; letter-spacing: .38em; margin-bottom: 5px; }
+.reel-core-label strong { display: block; color: #63edff; font-size: 15px; letter-spacing: .27em; }
+
+.reel-controls {
+  position: absolute;
+  right: 24px;
+  bottom: 22px;
+  display: flex;
+  gap: 8px;
+}
+.reel-controls button {
+  border: 1px solid rgba(75,212,241,.22);
+  background: rgba(2,15,22,.38);
+  color: rgba(123,227,243,.62);
+  min-width: 84px;
+  height: 30px;
+  padding: 0 10px;
+  cursor: pointer;
+  font-size: 8px;
+  letter-spacing: .18em;
+  transition: .2s ease;
+}
+.reel-controls button:hover { color: #c4faff; border-color: rgba(72,230,255,.75); box-shadow: 0 0 18px rgba(51,215,255,.15) inset; }
+
+.reel-hotspot {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(31vw, 420px);
+  height: min(31vw, 420px);
+  min-width: 240px;
+  min-height: 240px;
+  transform: translate(-50%, -50%);
+  border: 0;
+  background: transparent;
+  border-radius: 50%;
+  cursor: pointer;
+}
+.reel-error {
+  position: absolute;
+  left: 50%;
+  top: 72%;
+  transform: translateX(-50%);
+  max-width: min(90vw, 720px);
+  color: #ff9b7a;
+  font-size: 9px;
+  line-height: 1.5;
+  letter-spacing: .12em;
+  text-align: center;
+  text-shadow: 0 0 10px rgba(255,70,30,.5);
+}
+
+.is-alert .reel-brand,
+.is-alert .reel-core-label strong { text-shadow: 0 0 16px rgba(255,105,20,.7); }
+.is-alert .reel-controls button { border-color: rgba(255,112,40,.28); color: rgba(255,168,106,.72); }
+
+@media (max-width: 700px) {
+  .reel-brand { left: 16px; top: 16px; }
+  .reel-brand strong { font-size: 11px; }
+  .reel-status { bottom: 14px; gap: 8px; font-size: 7px; max-width: 90vw; white-space: normal; }
+  .reel-controls { right: 12px; top: 12px; bottom: auto; }
+  .reel-controls button { min-width: 0; height: 26px; font-size: 7px; }
+  .reel-hotspot { min-width: 210px; min-height: 210px; }
+}

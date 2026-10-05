@@ -1,0 +1,188 @@
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  min-height: 100%;
+  margin: 0;
+  background: #02070b;
+}
+
+body {
+  overflow: hidden;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.image-hud {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: #02070b;
+}
+
+.hud-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/*
+  Everything below is transparent.
+  These are LIVE overlays only.
+  The visual HUD itself comes from jarvis-hud.png.
+*/
+
+.live-clock {
+  position: absolute;
+  top: 3.1%;
+  right: 10.2%;
+  color: #8eeeff;
+  font-size: clamp(14px, 1.4vw, 25px);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-shadow: 0 0 14px #00c8ff;
+}
+
+.live-cpu {
+  position: absolute;
+  top: 14.5%;
+  left: 4.4%;
+  color: #e8fbff;
+  font-size: clamp(13px, 1.3vw, 24px);
+  font-weight: 700;
+  text-shadow: 0 0 10px #00bfff;
+}
+
+.live-ram {
+  position: absolute;
+  top: 14.5%;
+  left: 12.7%;
+  color: #e8fbff;
+  font-size: clamp(13px, 1.3vw, 24px);
+  font-weight: 700;
+  text-shadow: 0 0 10px #00bfff;
+}
+
+.live-host {
+  position: absolute;
+  top: 21.8%;
+  left: 10.8%;
+  color: #bcefff;
+  font-size: clamp(9px, 0.8vw, 15px);
+}
+
+.live-status {
+  position: absolute;
+  bottom: 17%;
+  left: 9.7%;
+  color: #43edb0;
+  font-size: clamp(9px, 0.85vw, 15px);
+  letter-spacing: 0.12em;
+  text-shadow: 0 0 12px rgba(65, 239, 176, 0.7);
+}
+
+.transparent-command {
+  position: absolute;
+  left: 23.5%;
+  right: 23.5%;
+  bottom: 15.2%;
+  height: 8%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 10px;
+}
+
+.transparent-command input {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: #dffaff;
+  font-size: clamp(13px, 1.2vw, 22px);
+  padding: 0 16px;
+}
+
+.transparent-command input::placeholder {
+  color: rgba(132, 210, 231, 0.72);
+}
+
+.transparent-command button {
+  height: 70%;
+  min-width: 70px;
+  border: 1px solid rgba(70, 220, 255, 0.65);
+  background: rgba(0, 190, 255, 0.10);
+  color: #73e5ff;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  cursor: pointer;
+  text-shadow: 0 0 9px #00c8ff;
+}
+
+.transparent-command button:hover {
+  background: rgba(0, 195, 255, 0.2);
+  box-shadow: 0 0 20px rgba(0, 190, 255, 0.25);
+}
+
+.transparent-command .mic-hit {
+  min-width: 52px;
+  font-size: 17px;
+}
+
+.live-answer {
+  position: absolute;
+  left: 25%;
+  right: 25%;
+  bottom: 24%;
+  max-height: 20%;
+  overflow: auto;
+  padding: 10px 14px;
+  color: #cfefff;
+  font-size: clamp(10px, 0.9vw, 16px);
+  line-height: 1.55;
+  background: rgba(0, 10, 17, 0.55);
+  border-left: 2px solid rgba(43, 210, 255, 0.7);
+  text-shadow: 0 0 8px rgba(0, 191, 255, 0.35);
+  backdrop-filter: blur(5px);
+}
+
+.live-error {
+  position: absolute;
+  left: 25%;
+  right: 25%;
+  bottom: 24%;
+  padding: 10px 14px;
+  color: #ff9d9d;
+  background: rgba(52, 8, 8, 0.72);
+  border-left: 2px solid #ff6565;
+  font-size: clamp(10px, 0.9vw, 16px);
+}
+
+@media (max-width: 800px) {
+  .hud-image {
+    object-fit: cover;
+  }
+
+  .transparent-command {
+    left: 10%;
+    right: 10%;
+    bottom: 9%;
+  }
+
+  .live-answer,
+  .live-error {
+    left: 10%;
+    right: 10%;
+    bottom: 18%;
+  }
+}

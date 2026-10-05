@@ -1,0 +1,15 @@
+* { box-sizing: border-box; }
+html, body, #root { width: 100%; height: 100%; margin: 0; }
+body { overflow: hidden; background: #010409; }
+.reel-app { position: fixed; inset: 0; overflow: hidden; background: #010409; user-select: none; touch-action: none; }
+.reel-canvas { position: fixed !important; inset: 0 !important; width: 100% !important; height: 100% !important; display: block; pointer-events: none !important; touch-action: none !important; }
+.hidden-camera { position: fixed !important; width: 1px !important; height: 1px !important; opacity: 0 !important; pointer-events: none !important; }
+.reel-vignette, .reel-scanlines { position: fixed; inset: 0; pointer-events: none !important; }
+.reel-vignette { z-index: 5; background: radial-gradient(ellipse at center, transparent 32%, rgba(0,0,0,.72) 100%); }
+.reel-scanlines { z-index: 6; opacity: .07; background: repeating-linear-gradient(to bottom, transparent 0 2px, rgba(190,242,255,.03) 2px 4px); }
+.reel-status, .reel-state { position: fixed; z-index: 10; bottom: 13px; pointer-events: none; font: 600 8px/1 'Courier New', monospace; letter-spacing: .2em; text-transform: uppercase; color: rgba(155,227,255,.38); text-shadow: 0 0 10px rgba(20,190,255,.20); }
+.reel-status { left: 16px; } .reel-state { right: 16px; }
+.reel-app.orange .reel-status, .reel-app.orange .reel-state { color: rgba(255,188,112,.60); text-shadow: 0 0 12px rgba(255,105,25,.38); }
+.status-dot { display: inline-block; width: 5px; height: 5px; margin-right: 7px; border-radius: 50%; background: rgba(75,115,130,.65); }
+.status-dot.live { background: #4dffd2; box-shadow: 0 0 10px rgba(77,255,210,.85); }
+.status-gap { margin: 0 8px; }
