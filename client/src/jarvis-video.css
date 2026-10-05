@@ -1,0 +1,122 @@
+html,
+body,
+#root {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  background: #00030a;
+}
+
+.jarvis-video-shell {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  background:
+    radial-gradient(
+      ellipse at center,
+      rgba(0, 110, 165, 0.08),
+      rgba(0, 0, 0, 0.96) 68%
+    );
+}
+
+.jarvis-video-shell .orb-root {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.jarvis-video-shell .orb-root canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.jarvis-video-shell .overlay-vignette {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      ellipse at center,
+      transparent 45%,
+      rgba(0,0,0,.46) 100%
+    );
+  z-index: 10;
+}
+
+.jarvis-video-shell .overlay-grain,
+.jarvis-video-shell .overlay-scanlines {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 11;
+}
+
+.jarvis-video-shell .overlay-scanlines {
+  opacity: .035;
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      rgba(100,220,255,.22) 0,
+      rgba(100,220,255,.22) 1px,
+      transparent 1px,
+      transparent 5px
+    );
+}
+
+.jarvis-video-shell .hud-title {
+  position: fixed;
+  top: 18px;
+  left: 28px;
+  z-index: 30;
+  color: rgba(89,224,255,.65);
+  font: 600 11px monospace;
+  letter-spacing: .35em;
+}
+
+.jarvis-video-shell .hud-hint {
+  position: fixed;
+  left: 50%;
+  bottom: 22px;
+  transform: translateX(-50%);
+  z-index: 30;
+  color: rgba(102,214,255,.42);
+  font: 600 8px monospace;
+  letter-spacing: .12em;
+  text-align: center;
+  line-height: 1.8;
+}
+
+.jarvis-video-shell .hud-controls {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 35;
+}
+
+.jarvis-video-shell .hud-btn {
+  border: 1px solid rgba(76,211,255,.18);
+  background: rgba(0,15,24,.42);
+  color: rgba(127,227,255,.62);
+  padding: 7px 10px;
+  font: 600 8px monospace;
+  letter-spacing: .12em;
+}
+
+.jarvis-video-shell .camera-panel {
+  display: none !important;
+}
+
+.jarvis-video-shell .hud-error {
+  color: rgba(255,110,100,.72);
+  font: 8px monospace;
+  margin-bottom: 8px;
+}
+
+@media (max-width: 800px) {
+  .jarvis-video-shell .hud-hint {
+    display: none;
+  }
+}

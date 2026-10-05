@@ -158,3 +158,100 @@ body { overflow: hidden; background: #010409; }
     opacity: 1;
   }
 }
+
+/* === JARVIS REACTOR FINISH === */
+html, body, #root {
+  background: #01050b !important;
+  overflow: hidden !important;
+}
+
+canvas {
+  image-rendering: auto;
+}
+
+.reel-app,
+.reel-orb-shell {
+  background:
+    radial-gradient(
+      circle at 50% 50%,
+      rgba(0, 92, 155, 0.045),
+      rgba(0, 0, 0, 0.92) 58%,
+      #01050b 100%
+    ) !important;
+}
+
+.reel-canvas {
+  filter:
+    saturate(1.18)
+    contrast(1.08)
+    brightness(1.04) !important;
+}
+
+/* VIDEO-MATCH JARVIS PRESENTATION */
+html,
+body,
+#root {
+  margin: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  overflow: hidden !important;
+  background: #01050b !important;
+}
+
+.reel-app,
+.reel-orb-shell {
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  overflow: hidden !important;
+  background: #01050b !important;
+}
+
+.reel-canvas,
+.reel-orb-shell canvas,
+.orb-root canvas {
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  display: block !important;
+  pointer-events: none !important;
+}
+
+/* === JARVIS VIDEO MATCH === */
+html,
+body,
+#root {
+  margin: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  overflow: hidden !important;
+  background: #01050a !important;
+}
+
+.reel-app,
+.reel-orb-shell {
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  overflow: hidden !important;
+  background:
+    radial-gradient(
+      circle at 50% 50%,
+      rgba(0, 105, 165, 0.035),
+      rgba(0, 0, 0, 0.95) 62%
+    ) !important;
+}
+
+.reel-canvas,
+.reel-orb-shell canvas,
+.orb-root canvas {
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  display: block !important;
+  pointer-events: none !important;
+}
