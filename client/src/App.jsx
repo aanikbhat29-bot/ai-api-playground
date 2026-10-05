@@ -1,27 +1,38 @@
 import { useState } from "react";
 
-const API_URL = import.meta.env.VITE_API_URL || "https://ai-api-playground.onrender.com";
+const API_URL =
+  import.meta.env.VITE_API_URL ||
+  "https://ai-api-playground.onrender.com";
 
 export default function App() {
   const [prompt, setPrompt] = useState("");
   const [answer, setAnswer] = useState("");
   const [provider, setProvider] = useState("");
   const [loading, setLoading] = useState(false);
+  const [speaking, setSpeaking] = useState(false);
   const [error, setError] = useState("");
+  const [audioUrl, setAudioUrl] = useState("");
 
   async function sendPrompt(e) {
     e.preventDefault();
+
     if (!prompt.trim()) return;
 
     setLoading(true);
     setError("");
     setAnswer("");
+    setAudioUrl("");
+    setSpeaking(false);
 
     try {
       const response = await fetch(`${API_URL}/api/chat`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ prompt })
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          prompt: prompt.trim()
+        })
       });
 
       const data = await response.json();
@@ -33,9 +44,53 @@ export default function App() {
       setProvider(data.provider);
       setAnswer(data.answer);
     } catch (err) {
-      setError(err.message);
+      setError(err.message || "Something went wrong.");
     } finally {
       setLoading(false);
+    }
+  }
+
+  async function readAloud() {
+    if (!answer || speaking) return;
+
+    setSpeaking(true);
+    setError("");
+
+    try {
+      const response = await fetch(`${API_URL}/api/tts`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          text: answer
+        })
+      });
+
+      if (!response.ok) {
+        let message = "Text-to-speech request failed.";
+
+        try {
+          const data = await response.json();
+          message = data.error || message;
+        } catch {
+          // Keep default message.
+        }
+
+        throw new Error(message);
+      }
+
+      const blob = await response.blob();
+      const url = URL.createObjectURL(blob);
+
+      setAudioUrl((oldUrl) => {
+        if (oldUrl) URL.revokeObjectURL(oldUrl);
+        return url;
+      });
+    } catch (err) {
+      setError(err.message || "Voice generation failed.");
+    } finally {
+      setSpeaking(false);
     }
   }
 
@@ -43,16 +98,19 @@ export default function App() {
     <main className="page">
       <section className="hero">
         <div className="badge">AI API PLAYGROUND</div>
+
         <h1>Build. Connect. Deploy.</h1>
+
         <p>
-          React frontend → Express backend → AI API.
-          Your API key stays on the server.
+          React frontend → Express backend → Gemini + ElevenLabs.
+          Your API keys stay on the server.
         </p>
       </section>
 
       <section className="card">
         <form onSubmit={sendPrompt}>
           <label htmlFor="prompt">Your prompt</label>
+
           <textarea
             id="prompt"
             value={prompt}
@@ -61,7 +119,10 @@ export default function App() {
             rows="7"
           />
 
-          <button type="submit" disabled={loading || !prompt.trim()}>
+          <button
+            type="submit"
+            disabled={loading || !prompt.trim()}
+          >
             {loading ? "Thinking..." : "Send to AI"}
           </button>
         </form>
@@ -74,7 +135,25 @@ export default function App() {
               <span>Response</span>
               <small>{provider}</small>
             </div>
+
             <p>{answer}</p>
+
+            <button
+              type="button"
+              onClick={readAloud}
+              disabled={speaking}
+            >
+              {speaking ? "Generating voice..." : "🔊 Read Aloud"}
+            </button>
+
+            {audioUrl && (
+              <audio
+                controls
+                autoPlay
+                src={audioUrl}
+                onEnded={() => setSpeaking(false)}
+              />
+            )}
           </div>
         )}
       </section>
