@@ -1,0 +1,185 @@
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  overflow: hidden;
+  background: #000;
+  font-family: "Courier New", monospace;
+}
+
+.reel-app {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  background: #000;
+  cursor: grab;
+  user-select: none;
+}
+
+.reel-app:active {
+  cursor: grabbing;
+}
+
+.orb-root {
+  position: fixed;
+  inset: 0;
+  transition:
+    filter 420ms ease,
+    transform 420ms ease;
+}
+
+/* The reel starts cyan/blue and turns warm amber after unlock. */
+.orb-root:not(.jarvis-unlocked) canvas {
+  filter:
+    hue-rotate(158deg)
+    saturate(1.45)
+    brightness(1.08);
+}
+
+.orb-root.jarvis-unlocked canvas {
+  filter:
+    saturate(1.08)
+    brightness(1.04);
+}
+
+.orb-root canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.overlay-grain,
+.overlay-scanlines,
+.overlay-vignette {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+}
+
+.overlay-grain {
+  z-index: 5;
+  opacity: 0.055;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 150px;
+  mix-blend-mode: screen;
+}
+
+.overlay-scanlines {
+  z-index: 6;
+  opacity: 0.18;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0 2px,
+    rgba(160, 235, 255, 0.035) 2px 4px
+  );
+}
+
+.overlay-vignette {
+  z-index: 4;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 28%,
+    rgba(0, 0, 0, 0.76) 100%
+  );
+}
+
+.camera-video-hidden,
+.camera-overlay-hidden {
+  position: fixed;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.center-trigger {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  width: min(46vw, 700px);
+  height: min(46vw, 700px);
+  min-width: 260px;
+  min-height: 260px;
+  transform: translate(-50%, -50%);
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+  z-index: 8;
+}
+
+.gesture-trigger,
+.minimal-status {
+  position: fixed;
+  z-index: 10;
+  color: rgba(140, 228, 255, 0.46);
+  letter-spacing: 0.18em;
+  font-size: 8px;
+}
+
+.minimal-status {
+  left: 18px;
+  bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  text-shadow: 0 0 10px rgba(70, 220, 255, 0.55);
+}
+
+.dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: rgba(90, 130, 150, 0.6);
+  box-shadow: 0 0 7px rgba(100, 180, 200, 0.45);
+}
+
+.dot.live {
+  background: #48ffc9;
+  box-shadow: 0 0 12px rgba(72, 255, 201, 0.9);
+}
+
+.gesture-trigger {
+  right: 18px;
+  bottom: 14px;
+  padding: 7px 10px;
+  border: 1px solid rgba(94, 208, 236, 0.16);
+  background: rgba(0, 8, 12, 0.25);
+  color: rgba(155, 232, 247, 0.45);
+  cursor: pointer;
+}
+
+.gesture-trigger:hover {
+  color: rgba(210, 249, 255, 0.9);
+  border-color: rgba(110, 225, 250, 0.48);
+}
+
+.jarvis-unlocked ~ .minimal-status {
+  color: rgba(255, 178, 84, 0.62);
+}
+
+@media (max-width: 700px) {
+  .gesture-trigger {
+    right: 10px;
+    bottom: 10px;
+  }
+
+  .minimal-status {
+    left: 10px;
+    bottom: 11px;
+  }
+}
+
+.reel-canvas {
+  pointer-events: none !important;
+  cursor: default !important;
+}
