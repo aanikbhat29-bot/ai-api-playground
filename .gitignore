@@ -6,3 +6,7 @@ dist/
 .vite/
 .DS_Store
 npm-debug.log*
+*.log
+client/src/backups/
+**/*backup*
+server/data/*.json

@@ -1,10 +1,11 @@
+import { JarvisBrainFinal } from "./jarvis-brain/brainFinal.js";
 import express from "express";
 import { registerLocalAssistant } from "./localAssistant.js";
 import cors from "cors";
 import dotenv from "dotenv";
 import os from "node:os";
 import path from "node:path";
-import { writeFile, unlink } from "node:fs/promises";
+import { writeFile, unlink, readFile } from "node:fs/promises";
 import { spawn, execFile } from "node:child_process";
 import fs from "node:fs";
 
@@ -916,6 +917,246 @@ app.post("/api/phone/ring", async (_req, res) => {
       error:
         error.message ||
         "Could not ring the phone."
+    });
+  }
+});
+
+
+const JARVIS_DESKTOP_AGENT_URL =
+  process.env.JARVIS_DESKTOP_AGENT_URL || "http://127.0.0.1:8766";
+
+async function executeJarvisDesktop(tool, input = {}) {
+  const runtimeFile = `/run/user/${process.getuid()}/jarvis-desktop-agent.json`;
+  const runtime = JSON.parse(await readFile(runtimeFile, "utf8"));
+  const token = String(runtime.token || "");
+
+  if (!token) throw new Error("JARVIS desktop-agent token is unavailable.");
+
+  const response = await fetch(`${JARVIS_DESKTOP_AGENT_URL}/execute`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ tool, input })
+  });
+
+  let payload = {};
+  try {
+    payload = await response.json();
+  } catch {
+    throw new Error(`Desktop agent returned HTTP ${response.status}.`);
+  }
+
+  if (!response.ok || payload.ok === false) {
+    if (payload?.confirmationRequired) {
+      return payload;
+    }
+
+    throw new Error(payload.error || `Desktop action failed (${response.status}).`);
+  }
+
+  return payload;
+}
+
+
+
+let jarvisBrainV2;
+
+function getJarvisBrainV2() {
+  if (!jarvisBrainV2) {
+    jarvisBrainV2 = new JarvisBrainV2({
+      localAiUrl:
+        process.env.JARVIS_LOCAL_AI_URL ||
+        "http://127.0.0.1:8765",
+
+      executeTool: executeJarvisDesktop,
+
+      cloudPlan: async (prompt) =>
+        callGemini(prompt),
+
+      answerQuestion: async (
+        query,
+        context,
+        options = {}
+      ) => {
+        let webContext = "";
+
+        if (options.fresh) {
+          try {
+            const results =
+              await import(
+                "./jarvis-brain/webSearch.js"
+              ).then((module) =>
+                module.searchWeb(query)
+              );
+
+            webContext = results
+              .map(
+                (item, index) =>
+                  `[${index + 1}] ${item.title}\n${item.snippet}`
+              )
+              .join("\n\n");
+          } catch (error) {
+            console.warn(
+              "[JARVIS web search]",
+              error.message
+            );
+          }
+        }
+
+        return callGemini(`
+You are JARVIS, an English-first desktop AI assistant.
+
+Answer the user accurately, naturally, and directly.
+
+Never answer with meaningless filler such as:
+"OK"
+"Sure"
+"Done"
+
+Default response language: English.
+
+Understand Hindi/Hinglish input, but respond in English unless the user explicitly asks for another language.
+
+For simple questions, be concise.
+For technical/educational questions, explain clearly.
+For difficult questions, reason carefully.
+Never invent facts.
+Never invent system values.
+Never claim a desktop action succeeded unless REAL TOOL RESULTS confirm it.
+
+RECENT JARVIS MEMORY:
+${context}
+
+${options.toolContext ? `
+REAL DESKTOP TOOL RESULTS:
+${options.toolContext}
+` : ""}
+
+${webContext ? `
+CURRENT WEB SEARCH RESULTS:
+${webContext}
+
+Use these results for current information.
+Do not claim you searched anything beyond the supplied results.
+` : ""}
+
+USER:
+${query}
+`);
+      }
+    });
+  }
+
+  return jarvisBrainV2;
+}
+
+
+let jarvisBrainFinal;
+
+function getJarvisBrainFinal() {
+  if (!jarvisBrainFinal) {
+    jarvisBrainFinal = new JarvisBrainFinal({
+      localAiUrl:
+        process.env.JARVIS_LOCAL_AI_URL ||
+        "http://127.0.0.1:8765",
+
+      executeTool:
+        executeJarvisDesktop,
+
+      cloudPlan:
+        async (prompt) =>
+          callGemini(prompt),
+
+      answerQuestion:
+        async (
+          query,
+          context,
+          options = {}
+        ) => {
+          return callGemini(`
+You are JARVIS.
+
+You are an intelligent, calm, English-first desktop assistant.
+
+Understand English, Hindi and Hinglish input.
+
+DEFAULT RESPONSE LANGUAGE:
+English.
+
+BEHAVIOR:
+- Be useful.
+- Be accurate.
+- Be concise for simple questions.
+- Explain technical and educational topics properly.
+- Use REAL desktop results when supplied.
+- Never invent system information.
+- Never claim an action succeeded unless the tool result confirms it.
+- Never claim web research happened unless real search results are supplied.
+- Maintain conversation context.
+- Do not use empty filler such as "OK", "Sure", or "Done".
+- Do not reveal hidden reasoning.
+
+MEMORY:
+${context}
+
+${
+  options.toolContext
+    ? `REAL DESKTOP RESULTS:\n${options.toolContext}\n`
+    : ""
+}
+
+${
+  options.webContext
+    ? `REAL WEB RESULTS:\n${options.webContext}\n`
+    : ""
+}
+
+USER REQUEST:
+${query}
+
+ANSWER NOW.
+`);
+        }
+    });
+  }
+
+  return jarvisBrainFinal;
+}
+
+app.post("/api/jarvis", async (req, res) => {
+  try {
+    const prompt =
+      String(req.body?.prompt || "")
+        .trim();
+
+    if (!prompt) {
+      return res.status(400).json({
+        ok: false,
+        error: "Prompt is required."
+      });
+    }
+
+    const result =
+      await getJarvisBrainFinal()
+        .run(prompt);
+
+    return res
+      .status(result.ok ? 200 : 500)
+      .json(result);
+  } catch (error) {
+    console.error(
+      "JARVIS BRAIN V4 ERROR:",
+      error
+    );
+
+    return res.status(500).json({
+      ok: false,
+      type: "error",
+      answer:
+        error.message ||
+        "JARVIS brain failed."
     });
   }
 });

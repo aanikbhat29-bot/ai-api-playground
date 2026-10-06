@@ -1,0 +1,7 @@
+{
+  "uuid": "jarvis-desktop-control@local",
+  "name": "JARVIS Desktop Control",
+  "description": "Local, user-session-only keyboard, mouse, and window bridge for JARVIS.",
+  "shell-version": ["50"],
+  "version": 1
+}

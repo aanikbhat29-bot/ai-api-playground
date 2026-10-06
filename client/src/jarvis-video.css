@@ -115,8 +115,90 @@ body,
   margin-bottom: 8px;
 }
 
+/* Small voice readout layered over the existing orb HUD. */
+.jarvis-video-shell .jarvis-voice-state {
+  position: fixed;
+  left: 50%;
+  bottom: 84px;
+  transform: translateX(-50%);
+  z-index: 40;
+  pointer-events: none;
+  white-space: nowrap;
+  color: rgba(165, 230, 255, .68);
+  font: 600 9px/1 "Courier New", monospace;
+  letter-spacing: .22em;
+  text-shadow: 0 0 12px rgba(30, 205, 255, .36);
+}
+
+.jarvis-video-shell .voice-dot {
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  margin-right: 7px;
+  border-radius: 50%;
+  background: rgba(85, 125, 145, .75);
+}
+
+.jarvis-video-shell .voice-dot.live {
+  background: #4dffd2;
+  box-shadow: 0 0 11px rgba(77, 255, 211, .92);
+  animation: jarvisVoicePulse 1.25s ease-in-out infinite;
+}
+
+.jarvis-video-shell .jarvis-heard {
+  position: fixed;
+  left: 50%;
+  bottom: 105px;
+  transform: translateX(-50%);
+  z-index: 40;
+  max-width: min(70vw, 760px);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  pointer-events: none;
+  color: rgba(150, 225, 255, .42);
+  font: 400 9px/1.2 "Courier New", monospace;
+  letter-spacing: .08em;
+  text-shadow: 0 0 8px rgba(40, 200, 255, .20);
+}
+
+.jarvis-video-shell .jarvis-activate {
+  position: fixed;
+  left: 50%;
+  bottom: 126px;
+  z-index: 45;
+  transform: translateX(-50%);
+  border: 1px solid rgba(91, 220, 255, .45);
+  background: rgba(0, 13, 23, .72);
+  color: rgba(185, 244, 255, .90);
+  padding: 10px 15px;
+  cursor: pointer;
+  font: 600 9px/1 "Courier New", monospace;
+  letter-spacing: .18em;
+  box-shadow: 0 0 25px rgba(0, 167, 255, .12), inset 0 0 18px rgba(0, 167, 255, .05);
+}
+
+.jarvis-video-shell .jarvis-voice-state[data-state="MIC DENIED"],
+.jarvis-video-shell .jarvis-voice-state[data-state="MIC UNAVAILABLE"],
+.jarvis-video-shell .jarvis-voice-state[data-state="MIC ERROR"],
+.jarvis-video-shell .jarvis-voice-state[data-state="LOCAL AI OFFLINE"],
+.jarvis-video-shell .jarvis-voice-state[data-state="TRANSCRIPTION FAILED"],
+.jarvis-video-shell .jarvis-voice-state[data-state="OLLAMA FAILED"],
+.jarvis-video-shell .jarvis-voice-state[data-state="TTS FAILED"] {
+  color: rgba(255, 138, 113, .82);
+}
+
+@keyframes jarvisVoicePulse {
+  0%, 100% { transform: scale(.85); opacity: .60; }
+  50% { transform: scale(1.18); opacity: 1; }
+}
+
 @media (max-width: 800px) {
   .jarvis-video-shell .hud-hint {
     display: none;
   }
+
+  .jarvis-video-shell .jarvis-voice-state { bottom: 28px; }
+  .jarvis-video-shell .jarvis-heard { bottom: 48px; }
+  .jarvis-video-shell .jarvis-activate { bottom: 70px; }
 }

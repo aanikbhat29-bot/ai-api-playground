@@ -1,0 +1,322 @@
+
+/* ============================================================
+   JARVIS VOICE ASSISTANT LAYER
+   ============================================================ */
+
+.jarvis-voice-status {
+  position: fixed;
+  left: 50%;
+  bottom: 25px;
+  transform: translateX(-50%);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  pointer-events: none;
+
+  font:
+    600 9px/1
+    "Courier New",
+    monospace;
+
+  letter-spacing: .28em;
+  text-transform: uppercase;
+
+  color:
+    rgba(120,225,255,.72);
+
+  text-shadow:
+    0 0 14px
+    rgba(0,195,255,.55);
+}
+
+.jarvis-voice-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+
+  background:
+    #67e8ff;
+
+  box-shadow:
+    0 0 8px #39d8ff,
+    0 0 18px
+    rgba(0,195,255,.8);
+
+  animation:
+    jarvisPulse 1.25s
+    ease-in-out
+    infinite;
+}
+
+.jarvis-voice-status[data-state="SPEAKING"] {
+  color:
+    rgba(228,252,255,.96);
+}
+
+.jarvis-heard {
+  position: fixed;
+  left: 50%;
+  bottom: 51px;
+  transform: translateX(-50%);
+  z-index: 100;
+
+  max-width: min(680px, 80vw);
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  font:
+    500 9px/1.5
+    "Courier New",
+    monospace;
+
+  letter-spacing: .08em;
+
+  color:
+    rgba(110,215,255,.38);
+
+  pointer-events: none;
+}
+
+.jarvis-activate {
+  position: fixed;
+  left: 50%;
+  bottom: 76px;
+  transform: translateX(-50%);
+  z-index: 200;
+
+  padding:
+    11px 20px;
+
+  border:
+    1px solid
+    rgba(91,220,255,.45);
+
+  background:
+    rgba(0,13,23,.72);
+
+  color:
+    rgba(185,244,255,.90);
+
+  font:
+    600 9px/1
+    "Courier New",
+    monospace;
+
+  letter-spacing:
+    .18em;
+
+  box-shadow:
+    0 0 25px
+    rgba(0,167,255,.12),
+
+    inset 0 0 18px
+    rgba(0,167,255,.05);
+
+  backdrop-filter:
+    blur(10px);
+
+  cursor: pointer;
+
+  transition:
+    .2s ease;
+}
+
+.jarvis-activate:hover {
+  border-color:
+    rgba(112,229,255,.8);
+
+  color:
+    #effcff;
+
+  box-shadow:
+    0 0 35px
+    rgba(0,190,255,.25);
+}
+
+@keyframes jarvisPulse {
+  0%, 100% {
+    opacity: .42;
+    transform: scale(.82);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.18);
+  }
+}
+
+@media (max-width: 700px) {
+  .jarvis-voice-status {
+    bottom: 14px;
+    font-size: 8px;
+  }
+
+  .jarvis-heard {
+    bottom: 38px;
+    max-width: 72vw;
+  }
+}
+
+/* ============================================================
+   JARVIS VOICE ASSISTANT LAYER
+   ============================================================ */
+
+.jarvis-voice-status {
+  position: fixed;
+  left: 50%;
+  bottom: 25px;
+  transform: translateX(-50%);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  pointer-events: none;
+
+  font:
+    600 9px/1
+    "Courier New",
+    monospace;
+
+  letter-spacing: .28em;
+  text-transform: uppercase;
+
+  color:
+    rgba(120,225,255,.72);
+
+  text-shadow:
+    0 0 14px
+    rgba(0,195,255,.55);
+}
+
+.jarvis-voice-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+
+  background:
+    #67e8ff;
+
+  box-shadow:
+    0 0 8px #39d8ff,
+    0 0 18px
+    rgba(0,195,255,.8);
+
+  animation:
+    jarvisPulse 1.25s
+    ease-in-out
+    infinite;
+}
+
+.jarvis-voice-status[data-state="SPEAKING"] {
+  color:
+    rgba(228,252,255,.96);
+}
+
+.jarvis-heard {
+  position: fixed;
+  left: 50%;
+  bottom: 51px;
+  transform: translateX(-50%);
+  z-index: 100;
+
+  max-width: min(680px, 80vw);
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  font:
+    500 9px/1.5
+    "Courier New",
+    monospace;
+
+  letter-spacing: .08em;
+
+  color:
+    rgba(110,215,255,.38);
+
+  pointer-events: none;
+}
+
+.jarvis-activate {
+  position: fixed;
+  left: 50%;
+  bottom: 76px;
+  transform: translateX(-50%);
+  z-index: 200;
+
+  padding:
+    11px 20px;
+
+  border:
+    1px solid
+    rgba(91,220,255,.45);
+
+  background:
+    rgba(0,13,23,.72);
+
+  color:
+    rgba(185,244,255,.90);
+
+  font:
+    600 9px/1
+    "Courier New",
+    monospace;
+
+  letter-spacing:
+    .18em;
+
+  box-shadow:
+    0 0 25px
+    rgba(0,167,255,.12),
+
+    inset 0 0 18px
+    rgba(0,167,255,.05);
+
+  backdrop-filter:
+    blur(10px);
+
+  cursor: pointer;
+
+  transition:
+    .2s ease;
+}
+
+.jarvis-activate:hover {
+  border-color:
+    rgba(112,229,255,.8);
+
+  color:
+    #effcff;
+
+  box-shadow:
+    0 0 35px
+    rgba(0,190,255,.25);
+}
+
+@keyframes jarvisPulse {
+  0%, 100% {
+    opacity: .42;
+    transform: scale(.82);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.18);
+  }
+}
+
+@media (max-width: 700px) {
+  .jarvis-voice-status {
+    bottom: 14px;
+    font-size: 8px;
+  }
+
+  .jarvis-heard {
+    bottom: 38px;
+    max-width: 72vw;
+  }
+}

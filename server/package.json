@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "node --watch src/index.js",
+    "desktop-agent": "node src/desktopAgent.js",
     "start": "node src/index.js"
   },
   "dependencies": {

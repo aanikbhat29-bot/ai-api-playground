@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "local-ai": "cd ../../jarvis-local && exec .venv/bin/python jarvis_local_service.py",
     "build": "vite build",
     "preview": "vite preview"
   },
